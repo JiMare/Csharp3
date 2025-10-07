@@ -1,3 +1,5 @@
+namespace FizzBuzzSpace;
+
 public class FizzBuzz
 {
     public void CountTo(int lastNumber)

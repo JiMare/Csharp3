@@ -1,4 +1,3 @@
-
 namespace GreedSpace;
 
 public class Greed

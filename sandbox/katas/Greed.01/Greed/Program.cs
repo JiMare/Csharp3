@@ -1,4 +1,4 @@
 ﻿using GreedSpace;
 
-Greed greed = new Greed();
+var greed = new Greed();
 greed.Roll();
