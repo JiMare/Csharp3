@@ -8,5 +8,5 @@ public class ToDoItem
 
     public string Description { get; set; }
 
-    public bool isCompleted { get; set; }
+    public bool IsCompleted { get; set; }
 }

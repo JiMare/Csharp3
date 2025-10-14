@@ -1,6 +1,6 @@
 namespace ToDoList.Domain.DTOs;
 
-public record ToDoItemUpdateRequestDto(string Name, string Description, bool isCompleted)
+public record ToDoItemUpdateRequestDto(string Name, string Description, bool IsCompleted)
 {
 
 }
