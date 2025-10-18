@@ -43,7 +43,8 @@ public class ToDoItemsController : ControllerBase
                 return NotFound();
             }
 
-            return Ok(items);
+            var dto = items.Select(ToDoItemGetResponseDto.FromDomain);
+            return Ok(dto);
         }
         catch (Exception ex)
         {
@@ -65,7 +66,8 @@ public class ToDoItemsController : ControllerBase
                 return NotFound();
             }
 
-            return Ok(item);
+            var dto = ToDoItemGetResponseDto.FromDomain(item);
+            return Ok(dto);
         }
         catch (Exception ex)
         {
@@ -77,12 +79,48 @@ public class ToDoItemsController : ControllerBase
     [HttpPut("{toDoItemId:int}")]
     public IActionResult UpdateById(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
     {
-        return Ok();
+
+        try
+        {
+            var item = items.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            item.Name = request.Name;
+            item.Description = request.Description;
+            item.IsCompleted = request.IsCompleted;
+
+            var dto = ToDoItemGetResponseDto.FromDomain(item);
+            return Ok(dto);
+        }
+        catch (Exception ex)
+        {
+            //500
+            return Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
+        }
     }
 
     [HttpDelete("{toDoItemId:int}")]
     public IActionResult DeleteById(int toDoItemId)
     {
-        return Ok();
+        try
+        {
+            var item = items.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            items.Remove(item);
+
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            //500
+            return Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
+        }
     }
 }
