@@ -8,10 +8,10 @@ using ToDoList.Domain.Models;
 [ApiController]
 public class ToDoItemsController : ControllerBase
 {
-    private static List<ToDoItem> items = [];
+    private static readonly List<ToDoItem> items = [];
 
     [HttpPost]
-    public IActionResult Create([FromBody] ToDoItemCreateRequestDto request)
+    public ActionResult<ToDoItemGetResponseDto> Create([FromBody] ToDoItemCreateRequestDto request)
     {
 
         //map to Domain object as soon as possible
@@ -33,7 +33,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult Read()
+    public ActionResult<IEnumerable<ToDoItemGetResponseDto>> Read()
     {
 
         try
@@ -54,7 +54,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpGet("{toDoItemId:int}")]
-    public IActionResult ReadById(int toDoItemId)
+    public ActionResult<ToDoItemGetResponseDto> ReadById(int toDoItemId)
     {
         try
         {
@@ -123,4 +123,10 @@ public class ToDoItemsController : ControllerBase
             return Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
         }
     }
+
+    public void AddItemToStorage(ToDoItem item)
+    {
+        items.Add(item);
+    }
+
 }

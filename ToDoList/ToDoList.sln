@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.WebApi", "src\ToDo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Domain", "src\ToDoList.Domain\ToDoList.Domain.csproj", "{5C54908C-2CDA-4200-8659-B0D839A05918}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0C0BE39A-65DC-4490-A0B0-3B4DEF9856E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Test", "tests\ToDoList.Test\ToDoList.Test.csproj", "{9634EA88-D19A-417C-B535-82E43EE5479E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,9 +30,14 @@ Global
 		{5C54908C-2CDA-4200-8659-B0D839A05918}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C54908C-2CDA-4200-8659-B0D839A05918}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C54908C-2CDA-4200-8659-B0D839A05918}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9634EA88-D19A-417C-B535-82E43EE5479E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9634EA88-D19A-417C-B535-82E43EE5479E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9634EA88-D19A-417C-B535-82E43EE5479E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9634EA88-D19A-417C-B535-82E43EE5479E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CD93EFFE-92D6-4397-9C84-8523FFB1222F} = {92D080EB-6AE2-4D71-9985-AF6CC5CE3117}
 		{5C54908C-2CDA-4200-8659-B0D839A05918} = {92D080EB-6AE2-4D71-9985-AF6CC5CE3117}
+		{9634EA88-D19A-417C-B535-82E43EE5479E} = {0C0BE39A-65DC-4490-A0B0-3B4DEF9856E6}
 	EndGlobalSection
 EndGlobal
