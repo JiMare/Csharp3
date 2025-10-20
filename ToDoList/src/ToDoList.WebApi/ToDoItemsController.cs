@@ -77,7 +77,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpPut("{toDoItemId:int}")]
-    public IActionResult UpdateById(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
+    public ActionResult<ToDoItemUpdateRequestDto> UpdateById(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
     {
 
         try
