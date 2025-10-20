@@ -29,7 +29,13 @@ public class ToDoItemsController : ControllerBase
         }
 
         //respond to client
-        return Created(); //201 //tato metoda z nějakého důvodu vrací status code No Content 204, zjištujeme proč ;)
+        //  return Created(); //201 //tato metoda z nějakého důvodu vrací status code No Content 204, zjištujeme proč ;)
+        var dto = ToDoItemGetResponseDto.FromDomain(item);
+        return CreatedAtAction(
+            nameof(ReadById),
+            new { toDoItemId = item.ToDoItemId },
+            dto
+        );
     }
 
     [HttpGet]
@@ -77,7 +83,7 @@ public class ToDoItemsController : ControllerBase
     }
 
     [HttpPut("{toDoItemId:int}")]
-    public ActionResult<ToDoItemUpdateRequestDto> UpdateById(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
+    public ActionResult<ToDoItemGetResponseDto> UpdateById(int toDoItemId, [FromBody] ToDoItemUpdateRequestDto request)
     {
 
         try
