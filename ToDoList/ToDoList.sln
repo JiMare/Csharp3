@@ -13,13 +13,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0C0BE39A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Test", "tests\ToDoList.Test\ToDoList.Test.csproj", "{9634EA88-D19A-417C-B535-82E43EE5479E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Persistence", "src\ToDoList.Persistence\ToDoList.Persistence.csproj", "{C607BFC5-8F4C-4C5C-8CCA-DEE1671CD447}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{CD93EFFE-92D6-4397-9C84-8523FFB1222F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -34,10 +33,18 @@ Global
 		{9634EA88-D19A-417C-B535-82E43EE5479E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9634EA88-D19A-417C-B535-82E43EE5479E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9634EA88-D19A-417C-B535-82E43EE5479E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C607BFC5-8F4C-4C5C-8CCA-DEE1671CD447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C607BFC5-8F4C-4C5C-8CCA-DEE1671CD447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C607BFC5-8F4C-4C5C-8CCA-DEE1671CD447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C607BFC5-8F4C-4C5C-8CCA-DEE1671CD447}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CD93EFFE-92D6-4397-9C84-8523FFB1222F} = {92D080EB-6AE2-4D71-9985-AF6CC5CE3117}
 		{5C54908C-2CDA-4200-8659-B0D839A05918} = {92D080EB-6AE2-4D71-9985-AF6CC5CE3117}
 		{9634EA88-D19A-417C-B535-82E43EE5479E} = {0C0BE39A-65DC-4490-A0B0-3B4DEF9856E6}
+		{C607BFC5-8F4C-4C5C-8CCA-DEE1671CD447} = {92D080EB-6AE2-4D71-9985-AF6CC5CE3117}
 	EndGlobalSection
 EndGlobal
