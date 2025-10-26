@@ -9,7 +9,6 @@ using ToDoList.Persistence;
 [ApiController]
 public class ToDoItemsController : ControllerBase
 {
-    private static readonly List<ToDoItem> items = [];
     private readonly ToDoItemsContext context;
 
     public ToDoItemsController(ToDoItemsContext context)
@@ -58,12 +57,13 @@ public class ToDoItemsController : ControllerBase
 
         try
         {
-            if (items == null)
+            var dbItems = context.ToDoItems.ToList();
+            if (dbItems == null)
             {
                 return NotFound();
             }
 
-            var dto = items.Select(ToDoItemGetResponseDto.FromDomain);
+            var dto = dbItems.Select(ToDoItemGetResponseDto.FromDomain);
             return Ok(dto);
         }
         catch (Exception ex)
@@ -79,14 +79,14 @@ public class ToDoItemsController : ControllerBase
         try
         {
 
-            var item = items.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
+            var dbItem = context.ToDoItems.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
 
-            if (item == null)
+            if (dbItem == null)
             {
                 return NotFound();
             }
 
-            var dto = ToDoItemGetResponseDto.FromDomain(item);
+            var dto = ToDoItemGetResponseDto.FromDomain(dbItem);
             return Ok(dto);
         }
         catch (Exception ex)
@@ -102,17 +102,18 @@ public class ToDoItemsController : ControllerBase
 
         try
         {
-            var item = items.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
-            if (item == null)
+            var dbItem = context.ToDoItems.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
+            if (dbItem == null)
             {
                 return NotFound();
             }
 
-            item.Name = request.Name;
-            item.Description = request.Description;
-            item.IsCompleted = request.IsCompleted;
+            dbItem.Name = request.Name;
+            dbItem.Description = request.Description;
+            dbItem.IsCompleted = request.IsCompleted;
+            context.SaveChanges();
 
-            var dto = ToDoItemGetResponseDto.FromDomain(item);
+            var dto = ToDoItemGetResponseDto.FromDomain(dbItem);
             return Ok(dto);
         }
         catch (Exception ex)
@@ -127,13 +128,15 @@ public class ToDoItemsController : ControllerBase
     {
         try
         {
-            var item = items.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
-            if (item == null)
+            var dbItems = context.ToDoItems.ToList();
+            var dbItem = dbItems.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
+            if (dbItem == null)
             {
                 return NotFound();
             }
 
-            items.Remove(item);
+            context.ToDoItems.Remove(dbItem);
+            context.SaveChanges();
 
             return NoContent();
         }
@@ -146,7 +149,8 @@ public class ToDoItemsController : ControllerBase
 
     public void AddItemToStorage(ToDoItem item)
     {
-        items.Add(item);
+        context.ToDoItems.Add(item);
+        context.SaveChanges();
     }
 
 }
