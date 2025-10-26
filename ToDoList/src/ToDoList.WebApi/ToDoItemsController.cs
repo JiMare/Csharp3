@@ -16,10 +16,10 @@ public class ToDoItemsController : ControllerBase
     {
         this.context = context;
 
-        ToDoItem item = new ToDoItem { Name = "Prvni ukol", Description = "Prvni popisek", IsCompleted = false };
+        //ToDoItem item = new ToDoItem { Name = "Prvni ukol", Description = "Prvni popisek", IsCompleted = false };
 
-        context.ToDoItems.Add(item);
-        context.SaveChanges();
+        //context.ToDoItems.Add(item);
+        //context.SaveChanges();
     }
 
     [HttpPost]
