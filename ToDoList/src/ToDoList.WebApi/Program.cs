@@ -1,11 +1,17 @@
+using ToDoList.Persistence;
+
 var builder = WebApplication.CreateBuilder(args);
+{
+    //Configure DI
+    builder.Services.AddControllers();
+    builder.Services.AddDbContext<ToDoItemsContext>();
+}
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
-app.MapGet("/test", () => "Hello Test");
-
-app.MapGet("/pozdrav/{jmeno}", (string jmeno) => $"Hello Test {jmeno}");
-
-app.MapGet("/nazdar-svete", () => "Nazdar!!!");
+{
+    //ConfigureAwaitOptions Middleware
+    app.MapControllers();
+}
 
 app.Run();
