@@ -6,6 +6,7 @@ using ToDoList.WebApi;
 using ToDoList.Domain.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
+using ToDoList.Persistence;
 
 public class UpdateTests
 {
@@ -21,7 +22,9 @@ public class UpdateTests
             Description = "Popis1",
             IsCompleted = false
         };
-        var controller = new ToDoItemsController();
+        var connectionString = "Data Source=../../../data/localdb_test.db";
+        using var context = new ToDoItemsContext(connectionString);
+        var controller = new ToDoItemsController(context: context);
         controller.AddItemToStorage(todoItem1);
 
         var dto = new ToDoItemUpdateRequestDto(

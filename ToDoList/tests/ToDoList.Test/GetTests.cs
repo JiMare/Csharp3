@@ -1,6 +1,7 @@
 namespace ToDoList.Test;
 
 using ToDoList.Domain.Models;
+using ToDoList.Persistence;
 using ToDoList.WebApi;
 public class GetTests
 {
@@ -24,7 +25,9 @@ public class GetTests
             Description = "Popis2",
             IsCompleted = false
         };
-        var controller = new ToDoItemsController();
+        var connectionString = "Data Source=../../../data/localdb_test.db";
+        using var context = new ToDoItemsContext(connectionString);
+        var controller = new ToDoItemsController(context: context);
         controller.AddItemToStorage(todoItem1);
         controller.AddItemToStorage(todoItem2);
         //Act
