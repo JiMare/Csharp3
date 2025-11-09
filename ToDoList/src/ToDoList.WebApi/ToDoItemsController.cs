@@ -4,21 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
+using ToDoList.Persistence.Repositories;
 
 [Route("api/[controller]")]
 [ApiController]
 public class ToDoItemsController : ControllerBase
 {
     private readonly ToDoItemsContext context;
+    private readonly IRepository<ToDoItem> repository;
 
-    public ToDoItemsController(ToDoItemsContext context)
+    public ToDoItemsController(IRepository<ToDoItem> repository)
     {
-        this.context = context;
-
-        //ToDoItem item = new ToDoItem { Name = "Prvni ukol", Description = "Prvni popisek", IsCompleted = false };
-
-        //context.ToDoItems.Add(item);
-        //context.SaveChanges();
+        this.repository = repository;
     }
 
     [HttpPost]
@@ -31,10 +28,8 @@ public class ToDoItemsController : ControllerBase
         //try to create an item
         try
         {
-            // item.ToDoItemId = items.Count == 0 ? 1 : items.Max(o => o.ToDoItemId) + 1;
-            // items.Add(item);
-            context.ToDoItems.Add(item);
-            context.SaveChanges();
+            repository.Create(item);
+
         }
         catch (Exception ex)
         {
@@ -42,7 +37,6 @@ public class ToDoItemsController : ControllerBase
         }
 
         //respond to client
-        //  return Created(); //201 //tato metoda z nějakého důvodu vrací status code No Content 204, zjištujeme proč ;)
         var dto = ToDoItemGetResponseDto.FromDomain(item);
         return CreatedAtAction(
             nameof(ReadById),
@@ -57,7 +51,7 @@ public class ToDoItemsController : ControllerBase
 
         try
         {
-            var dbItems = context.ToDoItems.ToList();
+            var dbItems = repository.Read();
             if (dbItems == null)
             {
                 return NotFound();
@@ -79,7 +73,7 @@ public class ToDoItemsController : ControllerBase
         try
         {
 
-            var dbItem = context.ToDoItems.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
+            var dbItem = repository.ReadById(toDoItemId);
 
             if (dbItem == null)
             {
@@ -102,16 +96,17 @@ public class ToDoItemsController : ControllerBase
 
         try
         {
-            var dbItem = context.ToDoItems.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
+            var dbItem = repository.UpdateById(toDoItemId, item =>
+             {
+                 item.Name = request.Name;
+                 item.Description = request.Description;
+                 item.IsCompleted = request.IsCompleted;
+             });
+
             if (dbItem == null)
             {
                 return NotFound();
             }
-
-            dbItem.Name = request.Name;
-            dbItem.Description = request.Description;
-            dbItem.IsCompleted = request.IsCompleted;
-            context.SaveChanges();
 
             var dto = ToDoItemGetResponseDto.FromDomain(dbItem);
             return Ok(dto);
@@ -128,15 +123,13 @@ public class ToDoItemsController : ControllerBase
     {
         try
         {
-            var dbItems = context.ToDoItems.ToList();
-            var dbItem = dbItems.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
+            var dbItem = repository.ReadById(toDoItemId);
             if (dbItem == null)
             {
                 return NotFound();
             }
 
-            context.ToDoItems.Remove(dbItem);
-            context.SaveChanges();
+            repository.DeleteById(dbItem);
 
             return NoContent();
         }
