@@ -13,6 +13,6 @@ where T : class
 
     public IEnumerable<T> Read();
 
-    public void DeleteById(T item);
+    public int DeleteById(int id);
 
 }

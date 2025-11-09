@@ -123,13 +123,13 @@ public class ToDoItemsController : ControllerBase
     {
         try
         {
-            var dbItem = repository.ReadById(toDoItemId);
-            if (dbItem == null)
+
+            var result = repository.DeleteById(toDoItemId);
+
+            if (result == 0)
             {
                 return NotFound();
             }
-
-            repository.DeleteById(dbItem);
 
             return NoContent();
         }
@@ -138,12 +138,6 @@ public class ToDoItemsController : ControllerBase
             //500
             return Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
         }
-    }
-
-    public void AddItemToStorage(ToDoItem item)
-    {
-        context.ToDoItems.Add(item);
-        context.SaveChanges();
     }
 
 }
