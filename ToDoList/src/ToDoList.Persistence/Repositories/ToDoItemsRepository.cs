@@ -16,7 +16,7 @@ public class ToDoItemsRepository : IRepository<ToDoItem>
 
     public void Create(ToDoItem item)
     {
-        context.ToDoItems.Add(item);
+        var newItem = context.ToDoItems.Add(item);
         context.SaveChanges();
     }
 
@@ -44,9 +44,15 @@ public class ToDoItemsRepository : IRepository<ToDoItem>
         return dbItem;
     }
 
-    public void DeleteById(ToDoItem item)
+    public int DeleteById(int id)
     {
+        var item = ReadById(id);
+        if (item == null)
+        {
+            return 0;
+        }
         context.ToDoItems.Remove(item);
         context.SaveChanges();
+        return 1;
     }
 }

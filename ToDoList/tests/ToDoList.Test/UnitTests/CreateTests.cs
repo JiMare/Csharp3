@@ -16,7 +16,7 @@ public class CreateTests
     {
         //Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
-        var controller = new ToDoItemsController(null, repositoryMock);
+        var controller = new ToDoItemsController(repositoryMock);
         var dto = new ToDoItemCreateRequestDto(
             Name: "Úkol",
             Description: "Popis",
