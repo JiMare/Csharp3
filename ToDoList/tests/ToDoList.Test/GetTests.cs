@@ -1,6 +1,7 @@
 namespace ToDoList.Test;
 
 using ToDoList.Domain.Models;
+using ToDoList.Persistence;
 using ToDoList.WebApi;
 public class GetTests
 {
@@ -11,7 +12,6 @@ public class GetTests
         //Arrange
         var todoItem1 = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno1",
             Description = "Popis1",
             IsCompleted = false
@@ -19,12 +19,13 @@ public class GetTests
 
         var todoItem2 = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno2",
             Description = "Popis2",
             IsCompleted = false
         };
-        var controller = new ToDoItemsController();
+        var connectionString = "Data Source=../../../../../data/localdb_test.db";
+        using var context = new ToDoItemsContext(connectionString);
+        var controller = new ToDoItemsController(context: context);
         controller.AddItemToStorage(todoItem1);
         controller.AddItemToStorage(todoItem2);
         //Act
@@ -33,11 +34,16 @@ public class GetTests
         //Assert
         Assert.NotNull(value);
 
-        var firstToDo = value.First();
-        Assert.Equal(todoItem1.ToDoItemId, firstToDo.Id);
-        Assert.Equal(todoItem1.Name, firstToDo.Name);
-        Assert.Equal(todoItem1.Description, firstToDo.Description);
-        Assert.Equal(todoItem1.IsCompleted, firstToDo.IsCompleted);
+        Assert.Contains(value, x =>
+     x.Name == todoItem1.Name &&
+     x.Description == todoItem1.Description &&
+     x.IsCompleted == todoItem1.IsCompleted
+ );
+        Assert.Contains(value, x =>
+            x.Name == todoItem2.Name &&
+            x.Description == todoItem2.Description &&
+            x.IsCompleted == todoItem2.IsCompleted
+        );
 
     }
 }

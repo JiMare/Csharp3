@@ -4,6 +4,7 @@ using ToDoList.Domain.Models;
 using ToDoList.WebApi;
 
 using Microsoft.AspNetCore.Mvc;
+using ToDoList.Persistence;
 
 public class DeleteTests
 {
@@ -13,12 +14,13 @@ public class DeleteTests
         //Arrange
         var todoItem1 = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno1",
             Description = "Popis1",
             IsCompleted = false
         };
-        var controller = new ToDoItemsController();
+        var connectionString = "Data Source=../../../../../data/localdb_test.db";
+        using var context = new ToDoItemsContext(connectionString);
+        var controller = new ToDoItemsController(context: context);
         controller.AddItemToStorage(todoItem1);
         //Act
         var result = controller.DeleteById(todoItem1.ToDoItemId);
@@ -31,7 +33,9 @@ public class DeleteTests
     public void Delete_MissingItem_ReturnsNotFound()
     {
         // Arrange
-        var controller = new ToDoItemsController();
+        var connectionString = "Data Source=../../../../../data/localdb_test.db";
+        using var context = new ToDoItemsContext(connectionString);
+        var controller = new ToDoItemsController(context: context);
 
         // Act
         var result = controller.DeleteById(999);

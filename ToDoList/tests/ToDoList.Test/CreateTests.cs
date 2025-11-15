@@ -5,6 +5,7 @@ using ToDoList.WebApi;
 using ToDoList.Domain.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
+using ToDoList.Persistence;
 
 public class CreateTests
 {
@@ -12,7 +13,9 @@ public class CreateTests
     public void Create_Item_Returns_204()
     {
         //Arrange
-        var controller = new ToDoItemsController();
+        var connectionString = "Data Source=../../../../../data/localdb_test.db";
+        using var context = new ToDoItemsContext(connectionString);
+        var controller = new ToDoItemsController(context: context);
         var dto = new ToDoItemCreateRequestDto(
             Name: "Úkol",
             Description: "Popis",
