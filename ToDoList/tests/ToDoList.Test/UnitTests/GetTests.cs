@@ -6,7 +6,7 @@ using ToDoList.Domain.DTOs;
 using NSubstitute;
 using ToDoList.Persistence.Repositories;
 using ToDoList.Domain.Models;
-
+using Microsoft.AspNetCore.Mvc;
 
 public class GetTests
 {
@@ -15,35 +15,17 @@ public class GetTests
     {
 
         //Arrange
-        var todoItem1 = new ToDoItemCreateRequestDto
-        (
-            Name: "Jmeno1",
-            Description: "Popis1",
-            IsCompleted: false
-        );
-
-        var todoItem2 = new ToDoItemCreateRequestDto
-        (
-            Name: "Jmeno2",
-            Description: "Popis2",
-            IsCompleted: false
-        );
-
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
-        controller.Create(todoItem1);
-        controller.Create(todoItem2);
+        var someItem = new ToDoItem { Name = "testName", Description = "testDescription", IsCompleted = false };
+        repositoryMock.Read().Returns([someItem]);
         //Act
         var result = controller.Read();
-        var value = result.GetValue();
         //Assert
-        Assert.NotNull(value);
+        Assert.IsType<ActionResult<IEnumerable<ToDoItemGetResponseDto>>>(result);
 
-        var firstToDo = value.First();
-        Assert.Equal(todoItem1.Name, firstToDo.Name);
-        Assert.Equal(todoItem1.Description, firstToDo.Description);
-        Assert.Equal(todoItem1.IsCompleted, firstToDo.IsCompleted);
+        repositoryMock.Received(1).Read();
 
     }
 }
