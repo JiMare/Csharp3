@@ -14,20 +14,17 @@ public class DeleteTests
     public void Delete_ExistingItem_ReturnsNoContent()
     {
         //Arrange
-        var todoItem1 = new ToDoItemCreateRequestDto
-        (
-            Name: "Jmeno1",
-            Description: "Popis1",
-            IsCompleted: false
-        );
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
-        var item = controller.Create(todoItem1);
+        repositoryMock.ReadById(Arg.Any<int>()).Returns(new ToDoItem { Name = "Jmeno1", Description = "Popis1", IsCompleted = false });
+
+        var id = 1;
         //Act
-        var result = controller.DeleteById(item.ToDoItemId);
+        var result = controller.DeleteById(id);
         //Assert
-        var noContent = Assert.IsType<NoContentResult>(result);
-        Assert.Equal(204, noContent.StatusCode);
+        Assert.IsType<NoContentResult>(result);
+        repositoryMock.Received(1).ReadById(id);
+        repositoryMock.Received(1).DeleteById(id);
     }
 
     [Fact]
