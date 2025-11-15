@@ -13,7 +13,7 @@ public class CreateTests
     public void Create_Item_Returns_204()
     {
         //Arrange
-        var connectionString = "Data Source=../../../data/localdb_test.db";
+        var connectionString = "Data Source=../../../../../data/localdb_test.db";
         using var context = new ToDoItemsContext(connectionString);
         var controller = new ToDoItemsController(context: context);
         var dto = new ToDoItemCreateRequestDto(

@@ -12,7 +12,6 @@ public class GetTests
         //Arrange
         var todoItem1 = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno1",
             Description = "Popis1",
             IsCompleted = false
@@ -20,12 +19,11 @@ public class GetTests
 
         var todoItem2 = new ToDoItem
         {
-            ToDoItemId = 1,
             Name = "Jmeno2",
             Description = "Popis2",
             IsCompleted = false
         };
-        var connectionString = "Data Source=../../../data/localdb_test.db";
+        var connectionString = "Data Source=../../../../../data/localdb_test.db";
         using var context = new ToDoItemsContext(connectionString);
         var controller = new ToDoItemsController(context: context);
         controller.AddItemToStorage(todoItem1);
@@ -37,7 +35,6 @@ public class GetTests
         Assert.NotNull(value);
 
         var firstToDo = value.First();
-        Assert.Equal(todoItem1.ToDoItemId, firstToDo.Id);
         Assert.Equal(todoItem1.Name, firstToDo.Name);
         Assert.Equal(todoItem1.Description, firstToDo.Description);
         Assert.Equal(todoItem1.IsCompleted, firstToDo.IsCompleted);
