@@ -33,7 +33,7 @@ public class DeleteTests
     public void Delete_MissingItem_ReturnsNotFound()
     {
         // Arrange
-        var connectionString = "Data Source=../../../data/localdb_test.db";
+        var connectionString = "Data Source=../../../../../data/localdb_test.db";
         using var context = new ToDoItemsContext(connectionString);
         var controller = new ToDoItemsController(context: context);
 
