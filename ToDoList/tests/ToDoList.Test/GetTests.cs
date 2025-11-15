@@ -34,10 +34,16 @@ public class GetTests
         //Assert
         Assert.NotNull(value);
 
-        var firstToDo = value.First();
-        Assert.Equal(todoItem1.Name, firstToDo.Name);
-        Assert.Equal(todoItem1.Description, firstToDo.Description);
-        Assert.Equal(todoItem1.IsCompleted, firstToDo.IsCompleted);
+        Assert.Contains(value, x =>
+     x.Name == todoItem1.Name &&
+     x.Description == todoItem1.Description &&
+     x.IsCompleted == todoItem1.IsCompleted
+ );
+        Assert.Contains(value, x =>
+            x.Name == todoItem2.Name &&
+            x.Description == todoItem2.Description &&
+            x.IsCompleted == todoItem2.IsCompleted
+        );
 
     }
 }
