@@ -1,12 +1,12 @@
 
 namespace ToDoList.Test;
 
-using ToDoList.Domain.Models;
 using ToDoList.WebApi;
 using ToDoList.Domain.DTOs;
 
-using Microsoft.AspNetCore.Mvc;
-using ToDoList.Persistence;
+using NSubstitute;
+using ToDoList.Persistence.Repositories;
+using ToDoList.Domain.Models;
 
 public class UpdateTests
 {
@@ -15,17 +15,16 @@ public class UpdateTests
     public void Update_Item_Should_Make_Change()
     {
         //Arrange
-        var todoItem1 = new ToDoItem
-        {
-            ToDoItemId = 1,
-            Name = "Jmeno1",
-            Description = "Popis1",
-            IsCompleted = false
-        };
-        var connectionString = "Data Source=../../../data/localdb_test.db";
-        using var context = new ToDoItemsContext(connectionString);
-        var controller = new ToDoItemsController(context: context);
-        controller.AddItemToStorage(todoItem1);
+        var todoItem1 = new ToDoItemCreateRequestDto
+        (
+
+            Name: "Jmeno1",
+            Description: "Popis1",
+            IsCompleted: false
+        );
+        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var controller = new ToDoItemsController(repositoryMock);
+        controller.Create(todoItem1);
 
         var dto = new ToDoItemUpdateRequestDto(
            Name: "Nove jmeno",
@@ -43,3 +42,4 @@ public class UpdateTests
     }
 
 }
+

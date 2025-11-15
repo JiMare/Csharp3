@@ -5,7 +5,9 @@ using ToDoList.WebApi;
 using ToDoList.Domain.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.Persistence;
+using NSubstitute;
+using ToDoList.Persistence.Repositories;
+using ToDoList.Domain.Models;
 
 public class CreateTests
 {
@@ -13,9 +15,8 @@ public class CreateTests
     public void Create_Item_Returns_204()
     {
         //Arrange
-        var connectionString = "Data Source=../../../data/localdb_test.db";
-        using var context = new ToDoItemsContext(connectionString);
-        var controller = new ToDoItemsController(context: context);
+        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var controller = new ToDoItemsController(repositoryMock);
         var dto = new ToDoItemCreateRequestDto(
             Name: "Úkol",
             Description: "Popis",
