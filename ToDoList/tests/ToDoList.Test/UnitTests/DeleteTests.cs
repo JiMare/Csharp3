@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using ToDoList.Persistence.Repositories;
 using ToDoList.Domain.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 public class DeleteTests
 {
@@ -16,14 +17,14 @@ public class DeleteTests
         //Arrange
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
-        repositoryMock.ReadById(Arg.Any<int>()).Returns(new ToDoItem { Name = "Jmeno1", Description = "Popis1", IsCompleted = false });
 
         var id = 1;
+
+        repositoryMock.DeleteById(id).Returns(1);
         //Act
         var result = controller.DeleteById(id);
         //Assert
         Assert.IsType<NoContentResult>(result);
-        repositoryMock.Received(1).ReadById(id);
         repositoryMock.Received(1).DeleteById(id);
     }
 
