@@ -4,22 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using ToDoList.Domain.DTOs;
 using ToDoList.Domain.Models;
 using ToDoList.Persistence;
+using ToDoList.Persistence.Repositories;
 
 [Route("api/[controller]")]
 [ApiController]
 public class ToDoItemsController : ControllerBase
 {
-    private static readonly List<ToDoItem> items = [];
     private readonly ToDoItemsContext context;
+    private readonly IRepository<ToDoItem> repository;
 
-    public ToDoItemsController(ToDoItemsContext context)
+    public ToDoItemsController(IRepository<ToDoItem> repository)
     {
-        this.context = context;
-
-        //ToDoItem item = new ToDoItem { Name = "Prvni ukol", Description = "Prvni popisek", IsCompleted = false };
-
-        //context.ToDoItems.Add(item);
-        //context.SaveChanges();
+        this.repository = repository;
     }
 
     [HttpPost]
@@ -32,10 +28,8 @@ public class ToDoItemsController : ControllerBase
         //try to create an item
         try
         {
-            // item.ToDoItemId = items.Count == 0 ? 1 : items.Max(o => o.ToDoItemId) + 1;
-            // items.Add(item);
-            context.ToDoItems.Add(item);
-            context.SaveChanges();
+            repository.Create(item);
+
         }
         catch (Exception ex)
         {
@@ -43,7 +37,6 @@ public class ToDoItemsController : ControllerBase
         }
 
         //respond to client
-        //  return Created(); //201 //tato metoda z nějakého důvodu vrací status code No Content 204, zjištujeme proč ;)
         var dto = ToDoItemGetResponseDto.FromDomain(item);
         return CreatedAtAction(
             nameof(ReadById),
@@ -58,12 +51,13 @@ public class ToDoItemsController : ControllerBase
 
         try
         {
-            if (items == null)
+            var dbItems = repository.Read();
+            if (dbItems == null)
             {
                 return NotFound();
             }
 
-            var dto = items.Select(ToDoItemGetResponseDto.FromDomain);
+            var dto = dbItems.Select(ToDoItemGetResponseDto.FromDomain);
             return Ok(dto);
         }
         catch (Exception ex)
@@ -79,14 +73,14 @@ public class ToDoItemsController : ControllerBase
         try
         {
 
-            var item = items.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
+            var dbItem = repository.ReadById(toDoItemId);
 
-            if (item == null)
+            if (dbItem == null)
             {
                 return NotFound();
             }
 
-            var dto = ToDoItemGetResponseDto.FromDomain(item);
+            var dto = ToDoItemGetResponseDto.FromDomain(dbItem);
             return Ok(dto);
         }
         catch (Exception ex)
@@ -102,17 +96,19 @@ public class ToDoItemsController : ControllerBase
 
         try
         {
-            var item = items.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
-            if (item == null)
+            var dbItem = repository.UpdateById(toDoItemId, item =>
+             {
+                 item.Name = request.Name;
+                 item.Description = request.Description;
+                 item.IsCompleted = request.IsCompleted;
+             });
+
+            if (dbItem == null)
             {
                 return NotFound();
             }
 
-            item.Name = request.Name;
-            item.Description = request.Description;
-            item.IsCompleted = request.IsCompleted;
-
-            var dto = ToDoItemGetResponseDto.FromDomain(item);
+            var dto = ToDoItemGetResponseDto.FromDomain(dbItem);
             return Ok(dto);
         }
         catch (Exception ex)
@@ -127,13 +123,13 @@ public class ToDoItemsController : ControllerBase
     {
         try
         {
-            var item = items.FirstOrDefault(i => i.ToDoItemId == toDoItemId);
-            if (item == null)
+
+            var result = repository.DeleteById(toDoItemId);
+
+            if (result == 0)
             {
                 return NotFound();
             }
-
-            items.Remove(item);
 
             return NoContent();
         }
@@ -142,11 +138,6 @@ public class ToDoItemsController : ControllerBase
             //500
             return Problem(ex.Message, null, StatusCodes.Status500InternalServerError);
         }
-    }
-
-    public void AddItemToStorage(ToDoItem item)
-    {
-        items.Add(item);
     }
 
 }

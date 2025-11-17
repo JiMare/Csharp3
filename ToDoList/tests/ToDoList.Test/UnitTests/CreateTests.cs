@@ -5,6 +5,9 @@ using ToDoList.WebApi;
 using ToDoList.Domain.DTOs;
 
 using Microsoft.AspNetCore.Mvc;
+using NSubstitute;
+using ToDoList.Persistence.Repositories;
+using ToDoList.Domain.Models;
 
 public class CreateTests
 {
@@ -12,7 +15,8 @@ public class CreateTests
     public void Create_Item_Returns_204()
     {
         //Arrange
-        var controller = new ToDoItemsController();
+        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var controller = new ToDoItemsController(repositoryMock);
         var dto = new ToDoItemCreateRequestDto(
             Name: "Úkol",
             Description: "Popis",
