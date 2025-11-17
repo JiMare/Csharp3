@@ -35,6 +35,7 @@ public class DeleteTests
         var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
+        repositoryMock.DeleteById(999).Returns(0);
         // Act
         var result = controller.DeleteById(999);
 
