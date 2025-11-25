@@ -1,0 +1,25 @@
+﻿@page "/"
+@using Microsoft.Extensions.WebEncoders.Testing
+@using Microsoft.VisualBasic
+@using System.Diagnostics.Metrics
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+<p>Current count: @counter</p>
+<button @onclick="IncrementCounter">Increment counter</button>
+
+<hr />
+
+<Dashboard />
+
+@code {
+    private int counter = 0;
+    private void IncrementCounter()
+    {
+        counter++;
+    }
+}

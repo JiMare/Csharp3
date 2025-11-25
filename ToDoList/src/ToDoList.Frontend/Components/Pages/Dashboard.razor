@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Components.Web
+@using ToDoList.Frontend.Models
+@rendermode InteractiveServer
+
+<PageTitle>Dashboard</PageTitle>
+
+<div>
+    <h2>TODOItems Dashboard</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Název</th>
+                <th>Popis</th>
+                <th>Dokončeno</th>
+                <th><button @onclick="OrderById">Order by ID</button>
+                    <button @onclick="OrderByName">Order by Name</button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in sortedData)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>@(item.IsCompleted ? "Dokončený" : "Nedokončený")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@code {
+    private List<ToDoItemView> testData = new List<ToDoItemView> { new ToDoItemView(1, "Název", "Popis", false), new
+ToDoItemView(2, "Název2", "Popis2", true),
+new ToDoItemView(3, "Test název", "Popis3", false), new ToDoItemView(4, "Další název", "Popis4", true), new
+ToDoItemView(5, "Poslední název", "Popis5", false) };
+
+    private List<ToDoItemView> sortedData = new List<ToDoItemView>();
+
+    protected override void OnInitialized()
+    {
+        sortedData = testData.ToList();
+    }
+
+    private void OrderById()
+    {
+        sortedData = sortedData.OrderBy(item => item.Id).ToList();
+    }
+
+    private void OrderByName()
+    {
+        sortedData = sortedData.OrderBy(item => item.Name).ToList();
+    }
+}
