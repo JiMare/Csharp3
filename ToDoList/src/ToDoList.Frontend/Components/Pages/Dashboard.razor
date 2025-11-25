@@ -2,6 +2,8 @@
 @using ToDoList.Frontend.Models
 @rendermode InteractiveServer
 
+@inject ToDoList.Frontend.Clients.IToDoItemsClient toDoItemsClient
+
 <PageTitle>Dashboard</PageTitle>
 
 <div>
@@ -41,10 +43,6 @@ ToDoItemView(5, "Poslední název", "Popis5", false) };
 
     private List<ToDoItemView> sortedData = new List<ToDoItemView>();
 
-    protected override void OnInitialized()
-    {
-        sortedData = testData.ToList();
-    }
 
     private void OrderById()
     {
@@ -54,5 +52,10 @@ ToDoItemView(5, "Poslední název", "Popis5", false) };
     private void OrderByName()
     {
         sortedData = sortedData.OrderBy(item => item.Name).ToList();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        sortedData = await toDoItemsClient.ReadItemsAsync();
     }
 }
