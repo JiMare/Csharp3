@@ -1,18 +1,15 @@
-
-
 namespace ToDoList.Persistence.Repositories;
 
-public interface IRepository<T>
-where T : class
+public interface IRepositoryAsync<T>
+    where T : class
 {
-    public void Create(T item);
+    public Task CreateAsync(T item);
 
-    public T? UpdateById(int id, Action<T> request);
+    public Task<T?> UpdateByIdAsync(int id, Action<T> request);
 
-    public T? ReadById(int id);
+    public Task<T?> ReadByIdAsync(int id);
 
-    public IEnumerable<T> Read();
+    public Task<IEnumerable<T>> ReadAsync();
 
-    public int DeleteById(int id);
-
+    public Task<int> DeleteByIdAsync(int id);
 }

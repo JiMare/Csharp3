@@ -11,7 +11,7 @@ public class UpdateTests
 {
 
     [Fact]
-    public void Update_Item_Should_Make_Change()
+    public async Task Update_Item_Should_Make_Change()
     {
         //Arrange
         var existingItem = new ToDoItem
@@ -22,9 +22,9 @@ public class UpdateTests
             IsCompleted = false
         };
 
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         repositoryMock
-            .UpdateById(Arg.Is(1), Arg.Any<Action<ToDoItem>>())
+            .UpdateByIdAsync(Arg.Is(1), Arg.Any<Action<ToDoItem>>())
             .Returns(callInfo =>
             {
                 var updateAction = callInfo.Arg<Action<ToDoItem>>();
@@ -40,7 +40,7 @@ public class UpdateTests
             IsCompleted: true
         );
         //Act
-        var result = controller.UpdateById(1, dto);
+        var result = await controller.UpdateByIdAsync(1, dto);
         var value = result.GetValue();
         //Assert
         Assert.NotNull(value);
@@ -49,7 +49,7 @@ public class UpdateTests
         Assert.True(value.IsCompleted);
 
         repositoryMock.Received(1)
-            .UpdateById(1, Arg.Any<Action<ToDoItem>>());
+            .UpdateByIdAsync(1, Arg.Any<Action<ToDoItem>>());
     }
 
 }

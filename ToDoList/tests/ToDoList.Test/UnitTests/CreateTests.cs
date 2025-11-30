@@ -12,10 +12,10 @@ using ToDoList.Domain.Models;
 public class CreateTests
 {
     [Fact]
-    public void Create_Item_Returns_204()
+    public async Task Create_Item_Returns_204()
     {
         //Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
         var dto = new ToDoItemCreateRequestDto(
             Name: "Úkol",
@@ -23,10 +23,10 @@ public class CreateTests
             IsCompleted: false
         );
         //Act
-        var result = controller.Create(dto);
+        var result = controller.CreateAsync(dto);
         //Assert
         var created = Assert.IsType<CreatedAtActionResult>(result.Result);
-        Assert.Equal(nameof(ToDoItemsController.ReadById), created.ActionName);
+        Assert.Equal(nameof(ToDoItemsController.ReadByIdAsync), created.ActionName);
 
         var body = Assert.IsType<ToDoItemGetResponseDto>(created.Value);
         Assert.Equal("Úkol", body.Name);

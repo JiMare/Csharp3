@@ -11,21 +11,21 @@ using Microsoft.AspNetCore.Mvc;
 public class GetTests
 {
     [Fact]
-    public void Get_AllItems_ReturnsAllItems()
+    public async Task Get_AllItems_ReturnsAllItems()
     {
 
         //Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
         var someItem = new ToDoItem { Name = "testName", Description = "testDescription", IsCompleted = false };
-        repositoryMock.Read().Returns([someItem]);
+        repositoryMock.ReadAsync().Returns(new[] { someItem });
         //Act
-        var result = controller.Read();
+        var result = controller.ReadAsync();
         //Assert
         Assert.IsType<ActionResult<IEnumerable<ToDoItemGetResponseDto>>>(result);
 
-        repositoryMock.Received(1).Read();
+        repositoryMock.Received(1).ReadAsync();
 
     }
 }

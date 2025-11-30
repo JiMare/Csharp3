@@ -12,32 +12,32 @@ using Microsoft.AspNetCore.Http.HttpResults;
 public class DeleteTests
 {
     [Fact]
-    public void Delete_ExistingItem_ReturnsNoContent()
+    public async Task Delete_ExistingItem_ReturnsNoContent()
     {
         //Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
         var id = 1;
 
-        repositoryMock.DeleteById(id).Returns(1);
+        repositoryMock.DeleteByIdAsync(id).Returns(Task.FromResult(1));
         //Act
-        var result = controller.DeleteById(id);
+        var result = await controller.DeleteByIdAsync(id);
         //Assert
         Assert.IsType<NoContentResult>(result);
-        repositoryMock.Received(1).DeleteById(id);
+        repositoryMock.Received(1).DeleteByIdAsync(id);
     }
 
     [Fact]
-    public void Delete_MissingItem_ReturnsNotFound()
+    public async Task Delete_MissingItem_ReturnsNotFound()
     {
         // Arrange
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         var controller = new ToDoItemsController(repositoryMock);
 
-        repositoryMock.DeleteById(999).Returns(0);
+        repositoryMock.DeleteByIdAsync(999).Returns(0);
         // Act
-        var result = controller.DeleteById(999);
+        var result = controller.DeleteByIdAsync(999);
 
         // Assert
         Assert.IsType<NotFoundResult>(result);
