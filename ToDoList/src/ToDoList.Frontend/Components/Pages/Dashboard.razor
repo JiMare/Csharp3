@@ -3,18 +3,20 @@
 @rendermode InteractiveServer
 
 @inject ToDoList.Frontend.Clients.IToDoItemsClient toDoItemsClient
+@inject NavigationManager NavigationManager;
 
 <PageTitle>Dashboard</PageTitle>
 
 <div>
     <h2>TODOItems Dashboard</h2>
-    <table class="table table-hover">
+    <table class="table table-hover mt-3">
         <thead class="table-dark">
             <tr>
-                <th><button @onclick="OrderById" class="btn btn-primary">ID</button></th>
-                <th><button @onclick="OrderByName" class="btn btn-primary">Název</button></th>
-                <th>Popis</th>
-                <th>Dokončeno</th>
+                <th><button @onclick="OrderById" class="btn btn-primary">Sort by ID</button></th>
+                <th><button @onclick="OrderByName" class="btn btn-primary">Sort by Name</button></th>
+                <th>Description</th>
+                <th>Is Completed</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -25,6 +27,9 @@
                     <td>@item.Name</td>
                     <td>@item.Description</td>
                     <td>@(item.IsCompleted ? "Dokončený" : "Nedokončený")</td>
+                    <td>
+                        <button class="btn btn-success" @onclick="() => EditItem(item)">Edit</button>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -33,10 +38,12 @@
 
 
 @code {
-    private List<ToDoItemView> testData = new List<ToDoItemView> { new ToDoItemView(1, "Název", "Popis", false), new
-ToDoItemView(2, "Název2", "Popis2", true),
-new ToDoItemView(3, "Test název", "Popis3", false), new ToDoItemView(4, "Další název", "Popis4", true), new
-ToDoItemView(5, "Poslední název", "Popis5", false) };
+    private List<ToDoItemView> testData = new List<ToDoItemView> { new ToDoItemView(){ Id = 1, Name = "Název", Description =
+"Popis", IsCompleted = false }, new
+ToDoItemView(){ Id = 2, Name = "Název2", Description = "Popis2", IsCompleted = true },
+new ToDoItemView(){ Id = 3, Name = "Test název", Description = "Popis3", IsCompleted = false }, new ToDoItemView(){ Id =
+4, Name = "Další název", Description = "Popis4", IsCompleted = true }, new
+ToDoItemView(){ Id = 5, Name = "Poslední název", Description = "Popis5", IsCompleted = false } };
 
     private List<ToDoItemView> sortedData = new List<ToDoItemView>();
 
@@ -49,6 +56,11 @@ ToDoItemView(5, "Poslední název", "Popis5", false) };
     private void OrderByName()
     {
         sortedData = sortedData.OrderBy(item => item.Name).ToList();
+    }
+
+    private void EditItem(ToDoItemView toDoItem)
+    {
+        NavigationManager.NavigateTo($"editToDoItem/{toDoItem.Id}");
     }
 
     protected override async Task OnInitializedAsync()
