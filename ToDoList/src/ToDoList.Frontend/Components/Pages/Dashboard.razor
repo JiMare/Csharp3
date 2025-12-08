@@ -8,22 +8,19 @@
 
 <div>
     <h2>TODOItems Dashboard</h2>
-    <table>
-        <thead>
+    <table class="table table-hover">
+        <thead class="table-dark">
             <tr>
-                <th>ID</th>
-                <th>Název</th>
+                <th><button @onclick="OrderById" class="btn btn-primary">ID</button></th>
+                <th><button @onclick="OrderByName" class="btn btn-primary">Název</button></th>
                 <th>Popis</th>
                 <th>Dokončeno</th>
-                <th><button @onclick="OrderById">Order by ID</button>
-                    <button @onclick="OrderByName">Order by Name</button>
-                </th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in sortedData)
             {
-                <tr>
+                <tr class="table-light">
                     <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@item.Description</td>
