@@ -26,9 +26,12 @@
                     <td>@item.Id</td>
                     <td>@item.Name</td>
                     <td>@item.Description</td>
-                    <td>@(item.IsCompleted ? "Dokončený" : "Nedokončený")</td>
+                    <td>@(item.IsCompleted ? "Completed" : "Incomplete")</td>
                     <td>
                         <button class="btn btn-success" @onclick="() => EditItem(item)">Edit</button>
+                        <button class="btn btn-warning" @onclick="() => ToggleIsCompleted(item)">@(item.IsCompleted ?
+                                                    "Mark as Incomplete" : "Mark as Completed")</button>
+                        <button class="btn btn-danger" @onclick="() => DeleteItem(item)">Delete</button>
                     </td>
                 </tr>
             }
@@ -61,6 +64,18 @@ ToDoItemView(){ Id = 5, Name = "Poslední název", Description = "Popis5", IsCom
     private void EditItem(ToDoItemView toDoItem)
     {
         NavigationManager.NavigateTo($"editToDoItem/{toDoItem.Id}");
+    }
+
+    private async Task ToggleIsCompleted(ToDoItemView toDoItem)
+    {
+        toDoItem.IsCompleted = !toDoItem.IsCompleted;
+        await toDoItemsClient.UpdateItemAsync(toDoItem);
+    }
+
+    private async Task DeleteItem(ToDoItemView toDoItem)
+    {
+        await toDoItemsClient.DeleteItemAsync(toDoItem.Id);
+        sortedData = await toDoItemsClient.ReadItemsAsync();
     }
 
     protected override async Task OnInitializedAsync()
