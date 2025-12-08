@@ -24,11 +24,13 @@ public class UpdateTests
 
         var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         repositoryMock
-            .UpdateByIdAsync(Arg.Is(1), Arg.Any<Action<ToDoItem>>())
+            .UpdateByIdAsync(Arg.Is(1), Arg.Any<ToDoItemUpdateRequestDto>())
             .Returns(callInfo =>
             {
-                var updateAction = callInfo.Arg<Action<ToDoItem>>();
-                updateAction(existingItem);
+                var dto = callInfo.Arg<ToDoItemUpdateRequestDto>();
+                existingItem.Name = dto.Name;
+                existingItem.Description = dto.Description;
+                existingItem.IsCompleted = dto.IsCompleted;
                 return existingItem;
             });
 
@@ -48,8 +50,8 @@ public class UpdateTests
         Assert.Equal("Novy popis", value.Description);
         Assert.True(value.IsCompleted);
 
-        repositoryMock.Received(1)
-            .UpdateByIdAsync(1, Arg.Any<Action<ToDoItem>>());
+        _ = repositoryMock.Received(1)
+             .UpdateByIdAsync(1, Arg.Any<ToDoItemUpdateRequestDto>());
     }
 
 }

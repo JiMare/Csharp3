@@ -97,12 +97,7 @@ public class ToDoItemsController : ControllerBase
 
         try
         {
-            var dbItem = await repositoryAsync.UpdateByIdAsync(toDoItemId, item =>
-             {
-                 item.Name = request.Name;
-                 item.Description = request.Description;
-                 item.IsCompleted = request.IsCompleted;
-             });
+            var dbItem = await repositoryAsync.UpdateByIdAsync(toDoItemId, request);
 
             if (dbItem == null)
             {

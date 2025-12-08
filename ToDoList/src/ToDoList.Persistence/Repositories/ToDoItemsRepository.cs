@@ -3,6 +3,7 @@
 namespace ToDoList.Persistence.Repositories;
 
 using ToDoList.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
 public class ToDoItemsRepository : IRepositoryAsync<ToDoItem>
 {
@@ -23,16 +24,16 @@ public class ToDoItemsRepository : IRepositoryAsync<ToDoItem>
 
     public async Task<ToDoItem?> ReadByIdAsync(int id)
     {
-        return context.ToDoItems.FirstOrDefault(i => i.ToDoItemId == id);
+        return await context.ToDoItems.FindAsync(id);
     }
 
     public async Task<IEnumerable<ToDoItem>> ReadAsync()
     {
-        return context.ToDoItems.ToList();
+        return await context.ToDoItems.ToListAsync();
     }
 
 
-    public async Task<ToDoItem> UpdateByIdAsync(int id, Action<ToDoItem> request)
+    public async Task<ToDoItem> UpdateByIdAsync(int id, Domain.DTOs.ToDoItemUpdateRequestDto dto)
     {
 
         var dbItem = await ReadByIdAsync(id);
@@ -40,7 +41,9 @@ public class ToDoItemsRepository : IRepositoryAsync<ToDoItem>
         {
             return null;
         }
-        request(dbItem);
+        dbItem.Name = dto.Name;
+        dbItem.Description = dto.Description;
+        dbItem.IsCompleted = dto.IsCompleted;
         await context.SaveChangesAsync();
         return dbItem;
     }

@@ -5,7 +5,7 @@ public interface IRepositoryAsync<T>
 {
     public Task CreateAsync(T item);
 
-    public Task<T?> UpdateByIdAsync(int id, Action<T> request);
+    public Task<T?> UpdateByIdAsync(int id, Domain.DTOs.ToDoItemUpdateRequestDto dto);
 
     public Task<T?> ReadByIdAsync(int id);
 
