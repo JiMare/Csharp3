@@ -11,7 +11,7 @@ public class UpdateTests
 {
 
     [Fact]
-    public void Update_Item_Should_Make_Change()
+    public async Task Update_Item_Should_Make_Change()
     {
         //Arrange
         var existingItem = new ToDoItem
@@ -22,13 +22,15 @@ public class UpdateTests
             IsCompleted = false
         };
 
-        var repositoryMock = Substitute.For<IRepository<ToDoItem>>();
+        var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
         repositoryMock
-            .UpdateById(Arg.Is(1), Arg.Any<Action<ToDoItem>>())
+            .UpdateByIdAsync(Arg.Is(1), Arg.Any<ToDoItemUpdateRequestDto>())
             .Returns(callInfo =>
             {
-                var updateAction = callInfo.Arg<Action<ToDoItem>>();
-                updateAction(existingItem);
+                var dto = callInfo.Arg<ToDoItemUpdateRequestDto>();
+                existingItem.Name = dto.Name;
+                existingItem.Description = dto.Description;
+                existingItem.IsCompleted = dto.IsCompleted;
                 return existingItem;
             });
 
@@ -40,7 +42,7 @@ public class UpdateTests
             IsCompleted: true
         );
         //Act
-        var result = controller.UpdateById(1, dto);
+        var result = await controller.UpdateByIdAsync(1, dto);
         var value = result.GetValue();
         //Assert
         Assert.NotNull(value);
@@ -48,8 +50,8 @@ public class UpdateTests
         Assert.Equal("Novy popis", value.Description);
         Assert.True(value.IsCompleted);
 
-        repositoryMock.Received(1)
-            .UpdateById(1, Arg.Any<Action<ToDoItem>>());
+        _ = repositoryMock.Received(1)
+             .UpdateByIdAsync(1, Arg.Any<ToDoItemUpdateRequestDto>());
     }
 
 }

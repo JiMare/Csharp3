@@ -3,8 +3,9 @@
 namespace ToDoList.Persistence.Repositories;
 
 using ToDoList.Domain.Models;
+using Microsoft.EntityFrameworkCore;
 
-public class ToDoItemsRepository : IRepository<ToDoItem>
+public class ToDoItemsRepository : IRepositoryAsync<ToDoItem>
 {
 
     private readonly ToDoItemsContext context;
@@ -14,45 +15,48 @@ public class ToDoItemsRepository : IRepository<ToDoItem>
 
     }
 
-    public void Create(ToDoItem item)
+    public async Task CreateAsync(ToDoItem item)
     {
-        var newItem = context.ToDoItems.Add(item);
-        context.SaveChanges();
+        context.ToDoItems.Add(item);
+        await context.SaveChangesAsync();
     }
 
 
-    public ToDoItem ReadById(int id)
+    public async Task<ToDoItem?> ReadByIdAsync(int id)
     {
-        return context.ToDoItems.FirstOrDefault(i => i.ToDoItemId == id);
+        return await context.ToDoItems.FindAsync(id);
     }
 
-    public IEnumerable<ToDoItem> Read()
+    public async Task<IEnumerable<ToDoItem>> ReadAsync()
     {
-        return context.ToDoItems.ToList();
+        return await context.ToDoItems.ToListAsync();
     }
 
-    public ToDoItem UpdateById(int id, Action<ToDoItem> request)
+
+    public async Task<ToDoItem> UpdateByIdAsync(int id, Domain.DTOs.ToDoItemUpdateRequestDto dto)
     {
 
-        var dbItem = ReadById(id);
+        var dbItem = await ReadByIdAsync(id);
         if (dbItem == null)
         {
             return null;
         }
-        request(dbItem);
-        context.SaveChanges();
+        dbItem.Name = dto.Name;
+        dbItem.Description = dto.Description;
+        dbItem.IsCompleted = dto.IsCompleted;
+        await context.SaveChangesAsync();
         return dbItem;
     }
 
-    public int DeleteById(int id)
+    public async Task<int> DeleteByIdAsync(int id)
     {
-        var item = ReadById(id);
+        var item = await ReadByIdAsync(id);
         if (item == null)
         {
             return 0;
         }
         context.ToDoItems.Remove(item);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
         return 1;
     }
 }
