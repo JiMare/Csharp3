@@ -12,10 +12,18 @@
 @if (ToDoItemModel != null)
 {
     <EditForm Model="ToDoItemModel" FormName="" OnSubmit="HandleSubmit">
-        <InputText id="Name" @bind-Value="ToDoItemModel.Name" />
-        <InputText id="Description" @bind-Value="ToDoItemModel.Description" />
-        <InputCheckbox id="IsCompleted" @bind-Value="ToDoItemModel.IsCompleted" />
-        <button class="btn btn-primary" type="submit">Save</button>
+        <div class="d-flex flex-column">
+            <div class="mb-3">
+                <label for="Name" class="form-label">Name</label>
+                <InputText id="Name" @bind-Value="ToDoItemModel.Name" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label for="Description" class="form-label">Description</label>
+                <InputText id="Description" @bind-Value="ToDoItemModel.Description" class="form-control" />
+            </div>
+            <InputCheckbox id="IsCompleted" @bind-Value="ToDoItemModel.IsCompleted" class="form-check-input" />
+            <button class="btn btn-primary mb-3" type="submit">Save</button>
+        </div>
     </EditForm>
 }
 @code {
