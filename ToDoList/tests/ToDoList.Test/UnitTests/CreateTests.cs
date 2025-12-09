@@ -23,7 +23,7 @@ public class CreateTests
             IsCompleted: false
         );
         //Act
-        var result = controller.CreateAsync(dto);
+        var result = await controller.CreateAsync(dto);
         //Assert
         var created = Assert.IsType<CreatedAtActionResult>(result.Result);
         Assert.Equal(nameof(ToDoItemsController.ReadByIdAsync), created.ActionName);

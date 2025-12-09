@@ -37,7 +37,7 @@ public class DeleteTests
 
         repositoryMock.DeleteByIdAsync(999).Returns(0);
         // Act
-        var result = controller.DeleteByIdAsync(999);
+        var result = await controller.DeleteByIdAsync(999);
 
         // Assert
         Assert.IsType<NotFoundResult>(result);

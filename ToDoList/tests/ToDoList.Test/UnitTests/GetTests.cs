@@ -21,7 +21,7 @@ public class GetTests
         var someItem = new ToDoItem { Name = "testName", Description = "testDescription", IsCompleted = false };
         repositoryMock.ReadAsync().Returns(new[] { someItem });
         //Act
-        var result = controller.ReadAsync();
+        var result = await controller.ReadAsync();
         //Assert
         Assert.IsType<ActionResult<IEnumerable<ToDoItemGetResponseDto>>>(result);
 
