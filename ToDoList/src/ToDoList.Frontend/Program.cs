@@ -10,6 +10,8 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://
 
 builder.Services.AddScoped<IToDoItemsClient, ToDoItemsClient>();
 
+builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.Configuration["ToDoItemApiAddress"]) });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
