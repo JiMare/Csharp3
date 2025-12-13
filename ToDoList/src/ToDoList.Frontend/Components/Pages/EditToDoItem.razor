@@ -24,6 +24,11 @@
                 <InputText id="Description" @bind-Value="ToDoItemModel.Description" class="form-control" />
                 <ValidationMessage For="() => ToDoItemModel.Description" />
             </div>
+            <div class="mb-3">
+                <label for="Category" class="form-label">Category</label>
+                <InputText id="Category" @bind-Value="ToDoItemModel.Category" class="form-control" />
+                <ValidationMessage For="() => ToDoItemModel.Category" />
+            </div>
             <InputCheckbox id="IsCompleted" @bind-Value="ToDoItemModel.IsCompleted" class="form-check-input" />
             <button class="btn btn-primary mb-3" type="submit">Save</button>
         </div>
