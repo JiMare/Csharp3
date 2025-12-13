@@ -19,7 +19,8 @@ public class UpdateTests
             ToDoItemId = 1,
             Name = "Původní jméno",
             Description = "Původní popis",
-            IsCompleted = false
+            IsCompleted = false,
+            Category = null
         };
 
         var repositoryMock = Substitute.For<IRepositoryAsync<ToDoItem>>();
@@ -31,6 +32,7 @@ public class UpdateTests
                 existingItem.Name = dto.Name;
                 existingItem.Description = dto.Description;
                 existingItem.IsCompleted = dto.IsCompleted;
+                existingItem.Category = dto.Category;
                 return existingItem;
             });
 
@@ -39,7 +41,8 @@ public class UpdateTests
         var dto = new ToDoItemUpdateRequestDto(
             Name: "Nove jmeno",
             Description: "Novy popis",
-            IsCompleted: true
+            IsCompleted: true,
+            Category: "Updated Category"
         );
         //Act
         var result = await controller.UpdateByIdAsync(1, dto);
@@ -48,6 +51,7 @@ public class UpdateTests
         Assert.NotNull(value);
         Assert.Equal("Nove jmeno", value.Name);
         Assert.Equal("Novy popis", value.Description);
+        Assert.Equal("Updated Category", value.Category);
         Assert.True(value.IsCompleted);
 
         _ = repositoryMock.Received(1)

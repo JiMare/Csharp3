@@ -44,6 +44,7 @@ public class ToDoItemsRepository : IRepositoryAsync<ToDoItem>
         dbItem.Name = dto.Name;
         dbItem.Description = dto.Description;
         dbItem.IsCompleted = dto.IsCompleted;
+        dbItem.Category = dto.Category;
         await context.SaveChangesAsync();
         return dbItem;
     }
