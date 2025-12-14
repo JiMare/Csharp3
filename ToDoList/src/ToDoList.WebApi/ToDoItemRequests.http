@@ -1,6 +1,6 @@
 # For more info on HTTP files go to https://aka.ms/vs/httpfile
 @host=http://localhost
-@port=5000
+@port=5001
 
 
 //List all ToDoItems
@@ -21,13 +21,14 @@ Content-Type: application/json
 {
   "name": "Example New Task",
   "description": "Example New Description",
-  "isCompleted": true
+  "isCompleted": true,
+  "category": null
 }
 
 ###
 
 //Update existing ToDoItem by id
-@itemToUpdateId = 2
+@itemToUpdateId = 9
 
 PUT {{host}}:{{port}}/api/ToDoItems/{{itemToUpdateId}}
 Content-Type: application/json
@@ -35,7 +36,8 @@ Content-Type: application/json
 {
   "name": "Updated Task",
   "description": "Updated Description",
-  "isCompleted": false
+  "isCompleted": false,
+  "category": "Updated Category"
 }
 
 ###

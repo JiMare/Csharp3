@@ -10,7 +10,7 @@ public class ToDoItemsContext : DbContext
     public ToDoItemsContext(string connectionString = "DataSource=../../data/localdb.db")
     {
         this.connectionString = connectionString;
-        Database.Migrate();
+        //Database.Migrate();
     }
 
     public DbSet<ToDoItem> ToDoItems { get; set; }

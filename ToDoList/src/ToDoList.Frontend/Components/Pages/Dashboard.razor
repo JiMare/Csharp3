@@ -16,6 +16,7 @@
                 <th><button @onclick="OrderByName" class="btn btn-primary">Sort by Name</button></th>
                 <th>Description</th>
                 <th>Is Completed</th>
+                <th>Category</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -27,6 +28,7 @@
                     <td>@item.Name</td>
                     <td>@item.Description</td>
                     <td>@(item.IsCompleted ? "Completed" : "Incomplete")</td>
+                    <td>@(item.Category ?? "No Category")</td>
                     <td>
                         <button class="btn btn-success" @onclick="() => EditItem(item)">Edit</button>
                         <button class="btn btn-warning" @onclick="() => ToggleIsCompleted(item)">@(item.IsCompleted ?

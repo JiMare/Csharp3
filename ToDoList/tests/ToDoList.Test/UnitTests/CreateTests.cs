@@ -20,7 +20,8 @@ public class CreateTests
         var dto = new ToDoItemCreateRequestDto(
             Name: "Úkol",
             Description: "Popis",
-            IsCompleted: false
+            IsCompleted: false,
+            Category: "Test category"
         );
         //Act
         var result = await controller.CreateAsync(dto);
@@ -31,6 +32,7 @@ public class CreateTests
         var body = Assert.IsType<ToDoItemGetResponseDto>(created.Value);
         Assert.Equal("Úkol", body.Name);
         Assert.Equal("Popis", body.Description);
+        Assert.Equal("Test category", body.Category);
         Assert.False(body.IsCompleted);
     }
 }
